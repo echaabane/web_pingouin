@@ -1,0 +1,61 @@
+{% extends 'aide_memoire/base_aide_memoire.html' %}
+
+{% block contenu %}
+<p>
+    Pour accéder au git action : 2 façons:<br>
+    Par la page Github : au niveau du repository l'onglet action.<br>
+    Dans le dossier local de/ votre repository .github/worflows <br>
+    Vous pouvez créer un fichier yml.<br>
+    exemple :<br>
+    <div class="code">
+        # This workflow will install Python dependencies, run tests and lint with a single version of Python<br>
+        # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python<br>
+        <br>
+        name: Python application<br>
+        <br>
+        on:<br>
+        &ensp;push:<br>
+        &ensp;&ensp;    branches: [ "dev" ]<br>
+        &ensp;pull_request:<br>
+        &ensp;&ensp;    branches: [ "dev" ]<br>
+            <br>
+        permissions:<br>
+        &ensp;contents: read<br>
+        <br>
+        jobs:<br>
+        &ensp;build:<br>
+        <br>
+        &ensp;&ensp;    runs-on: ubuntu-latest<br>
+            <br>
+            &ensp;&ensp;    steps:<br>
+            &ensp;&ensp;    - uses: actions/checkout@v3<br>
+            &ensp;&ensp;    - name: Set up Python 3.10<br>
+            &ensp;&ensp;uses: actions/setup-python@v3<br>
+            &ensp;&ensp;with:<br>
+            &ensp;&ensp;&ensp;    python-version: "3.10"<br>
+            &ensp;&ensp;- name: Install dependencies<br>
+            &ensp;&ensp;run: |<br>
+            &ensp;&ensp;&ensp;    python -m pip install --upgrade pip<br>
+            &ensp;&ensp;&ensp;    pip install flake8 pytest pytest-cov<br>
+            &ensp;&ensp;&ensp;    if [ -f requirements.txt ]; then pip install -r requirements.txt; fi<br>
+            &ensp;&ensp;- name: Lint with flake8<br>
+            &ensp;&ensp;run: |<br>
+            &ensp;&ensp;&ensp;    # stop the build if there are Python syntax errors or undefined names<br>
+            &ensp;&ensp;&ensp;    flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics<br>
+            &ensp;&ensp;&ensp;    # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide<br>
+            &ensp;&ensp;&ensp;    flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics<br>
+            &ensp;&ensp;- name: Test with pytest with coverage<br>
+            &ensp;&ensp;run: |<br>
+            &ensp;&ensp;&ensp;    pytest --cov<br>
+    </div>
+    Description :<br>
+    Le bloc name permet de donnée un nom à votre workflow.<br>
+    Le bloc on : vous permet de specifier les triggers pour ce workflow. Ici aund on push ou pull_request sur la branche dev<br>
+    Le bloc permissions gére les autorisations
+    Le bloc jobs : Il fonctionne un peu comme ansible avec un différents jobs.<br>
+    run-ons vous permets de definir l'image sur laquel votre worflow tourne.<br>
+    bref un peu comme un fichier ansible ou docker.<br>
+    <br>
+</p>
+
+{% endblock %}

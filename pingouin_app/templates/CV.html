@@ -1,0 +1,170 @@
+{% extends 'base.html' %}
+
+{%block content %}
+
+<link href="{{ url_for('static', filename='css/style_cv.css') }}" rel="stylesheet">
+
+<div class="wrapper">
+	<div class="image_top">
+		<img src={{ url_for('static', filename='img/CV/CV1.gif') }} width="330" height="279"/>
+		<img src={{ url_for('static', filename='img/CV/CV2.png') }} width="450" height="279"/>	
+		<img src={{ url_for('static', filename='img/CV/CV3.jpg') }} width="450" height="279"/>		
+	</div>	
+
+	<div class="coordonnees" >
+		<b>Barrios Mathieu</b><br>
+		27 rue Curie<br>
+		62172 Bouvigny-Boyeffles<br>
+		06 13 64 69 16<br>
+		<a href="mailto:mathieu.barrios@outlook.com">mathieu.barrios@outlook.com</a><br>
+		<a href="https://www.linkedin.com/in/mathieu-barrios-050ba9263/">LinkedIn</a><br>
+		<a href="https://github.com/barrmath/barrmath/tree/main">Github</a><br>
+	</div>
+
+
+	<div class="competence">
+		<p>
+			<br>
+			<b>Compétences:</b>
+			<ul>
+				<li><b>Programmation:</b>
+				<ul>
+					<li>Python</li>
+					<ul>
+						<li>Pandas</li>
+						<li>Sklearn</li>
+						<li>notion Tensorflow</li>
+						<li>notion Django</li>
+						<li>Flask</li>
+					</ul>
+						<li>notion html/CSS</li>
+						<li>notion R et Julia</li>
+						<li>notion C/C++</li>
+				</ul>
+				<br>
+				<li><b>Base de donnée:</b></li>
+				<ul>
+					<li>Requête SQL</li>
+					<li>MariaDB</li>
+					<li>SQLlite</li>
+				</ul>
+				<br>
+				<li><b>Visualisation:</b></li>
+				<ul>
+					<li>Matplotlib, Seaborn</li>
+					<li>PowerBi</li>
+					<li>Tableau</li>
+				</ul>
+				<br>
+				<li><b>Linux et Bash</b></li>
+				<ul>
+					<li>Debian/Ubuntu</li>
+					<li>Slack/Manjaro</li>
+				</ul>
+				<br>
+				<li><b>Windows et Powershell</b></li>
+				<li><b></b>Git/Github/Gitlab</b></li>
+				<li><b>Docker</b></li>
+				<br>
+				<li><b>Virtualisation</b></li>
+				<ul>
+					<li>HyperV</li>
+					<li>VirtualBox</li>
+					<li>VMware</li>
+				</ul>
+				<br>
+				<li><b>Méthode:</b></li>
+				<ul>
+					<li>Agile et Cascade</li>
+					<li>Kanban</li>
+					<li>Trello</li>
+				</ul>
+			</ul>
+		</p>
+	</div>
+
+	<div class="formation">
+		
+		<h1>Administrateur DevOps et Data</h1>
+		<br>
+		<br>
+
+		<p id="resume" >Ancien Technicien de Maintenance en reconversion<br>
+		Passionné par l’informatique depuis toujours.</p>
+		
+		<h2>Formation</h2>
+		<br>
+		<br>
+		<ul>
+			<li><b>2023 :</b>Formation DevOps chez Studi</li>
+					<ul>
+						<li>Automatisation du déploiement d'infrastructure dans le Cloud</li>
+						<li>Déploiement d'une application en continu</li>
+						<li>Supervision des services déployés</li>
+					</ul>
+			<li>
+			<br>
+				<b>2022 :</b> Titre Data Analyst chez OpenclassRoom
+				<ul>
+					<li>Gestion de Base de données SQL</li>
+					<li>Création de tableaux de bord avec PowerBI pour voir l’avancement de projets</li>
+					<li>Analyse de données</li>
+				</ul>
+			</li>
+			<br>
+			<li><b>2018 :</b>Habilitation électrique et CASES 3 et 3B</li>
+			<br>
+			<li><b>2016 :</b> BTS	Maintenance des Systèmes</li>
+			<ul>
+				<li>Techniques de dépannages et recherche de pannes</li>
+			</ul>
+			<br>
+			<li><b>2016 :</b> TOEIC score 715</li>
+			<br>
+			<li><b>2010 :</b> CAP	boulanger</li>
+			<br>
+			<li><b>2004 :</b> DUT GEII (Génie Électrique et Informatique Industrielle)</li>
+		</ul>
+
+		<h2>Expérience</h2>
+		<br>
+			<br>
+
+		<ul>
+			<li><b>Juillet 2017 à Janvier 2022 : </b>Technicien de Maintenance chez Recycables groupe Suez
+			<ul>
+				<li>Utilisation d’une GMAO (Gestion de Maintenance Assisté par Ordinateur)
+				<ul>
+					<li>Rapports divers (dépannage, entretien préventif, ronde…)</li>
+					<li>Mise à jour d’inventaire</li>
+				</ul>
+			<li>Dépannage et opération préventive de ligne de production
+			</ul>
+			<br>
+			<li><b>2014-2015 :</b> Technicien de maintenance en interim (Haagens Dazs, Délifrance,	AKEBONO, Ingredia ,Airmat)
+			<ul>
+				<li>Mise à jour des GMAO
+				<li>Dépannage et entretien de ligne de production
+			</ul>
+			<br>
+			<li><b>2011-2014 :</b> Boulanger
+			<ul>
+				<li>Fabrication du pain en entreprise artisanale
+			</ul>
+			<br>
+			<li><b>2005-2011 :</b> Technicien itinérant en traitement des eaux chez Apinor
+			<ul>
+				<li>Programmation d’automate
+				<li>Dépannage des installations et entretien courant
+				<li>Analyse chimique par microméthode
+			</ul>
+			<br>
+			<li><b>2004 : </b>Technicien Informatique chez Spot Informatique
+				<ul>
+					<li>Dépannage de logiciels et matériels informatique
+				</ul>
+		</ul>
+	</div>
+
+</div>
+{% endblock %}

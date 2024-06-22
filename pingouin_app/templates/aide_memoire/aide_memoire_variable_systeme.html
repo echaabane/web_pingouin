@@ -1,0 +1,25 @@
+{% extends 'aide_memoire/base_aide_memoire.html' %}
+
+{% block contenu %}
+    <header> <h1>Secret Key et autres variables à cacher</h1></header>
+    <p>
+        Il faut cacher des clés, des passwords, des users. Mais je veux mettre mon code sur Git Alors comment faire?<br>
+        Créez un fichier .env et y mettre en clair vos clés. Exemple : SECRET_KEY = 1234<br>
+        Conseil: mettre une meilleure clé que 1234<br>
+        Ensuite avec la bibliothèque OS vous pouvez demander une clé dans la variable d'environnement du server.<br>
+        <div class="code">
+            from dotenv import load_dotenv<br>
+            import os<br>
+            <br>
+            load_dotenv()<br>
+            <br>
+            #recup clé secrete dans un fichier .env<br>
+            SECRET_KEY = os.getenv("SECRET_KEY")<br>
+        </div>
+        Il ne vous reste plus qu'à ajouter une variable d'environnemt dans votre serveur.<br>
+        Sur Heroku vous le trouverez dans setting reveal config vars
+        <img src={{ url_for('static', filename='img/aide_memoire_variable_systeme/heroku_conf.png')}}/>
+    </p>
+
+
+{% endblock %}

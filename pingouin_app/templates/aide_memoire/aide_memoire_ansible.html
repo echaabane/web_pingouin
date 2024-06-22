@@ -1,0 +1,127 @@
+{% extends 'aide_memoire/base_aide_memoire.html' %}
+
+{% block contenu %}
+
+<link href="{{ url_for('static', filename='css/style_aide.css') }}" rel="stylesheet">
+<h1>Aide Mémoire Ansible</h1>
+<p>
+    Ansible : vous permet d'éxecuter sur un ou plusieurs ordinateurs distants des commandes.<br>
+    Par exemple des apt-get pour installer divers logiciels.<br>
+    <br>
+    On a pas besoin d'installer Ansible sur les ordinateurs distants. Il faut juste un ordinateur avec Ansible
+    installé.<br>
+    Premiére étape : inventoriez les ordinateurs ou servers à automatiser.<br>
+    crée un fichier .ini par exemple inventaire.ini avec les nom des configs
+    par exemple :
+    <div class='code'>
+        fedoraBDD<br>
+        fedoraweb
+    </div><br>
+    Il faut ensuite modifier le fichier /etc/host pour ajouter les lien entre les nom et les adresses IP.<br>
+    Par exemple :<br>
+    <div class="code">
+        #pour faire des test avec ansible et des VMs<br>
+        0192.168.1.141 fedoraBDD<br>
+        192.168.1.140 fedoraweb <br>
+    </div>
+    Vous pouvez vérifier si vos serveurs répondent à Ansible avec la commande ping :<br>
+    <div class="code">
+        ansible -i inventaire.ini -m ping --user tux --ask-pass all
+    </div>
+    Si la commande ne marche pas : il faut peut être installer, sur le serveur Ansible, ssh et ssh_pass pour permettre à Ansible de
+    fonctionner<br>
+    <br>
+    Le ssh avec un mot de passe, il parait que c'est pas assez sécurisé. Donc on va passer par un jeux de clé publique.
+    Génération de clé avec la commande ssh :<br>
+    <div class="code">
+        ssh-keygen -t ecdsa
+    </div>
+    Puis mise en place des clés pour les hosts:<br>
+    <div class="code">
+        ansible -i inventaire.ini  -m authorized_key -a 'user=tux state=present key="&#123&#123lookup("file", "/home/tux/.ssh/id_ecdsa.pub") &#125&#125"' --user tux --ask-pass --become --ask-become-pass all
+    </div>
+    Maintenant, il faut configurer les rôles et les appliquer aux bons serveurs.<br>
+    <br>
+    Un rôle est une série d'instructions pour arriver à faire une chose : par exemple installer apache.<br>
+    Ce rôle peut être repris plusieurs fois si on dois, par exemple, installer apache sur plusieurs machines<br>
+    On va mettre les rôles dans un répertoire roles (sans l'accent), c'est le dossier par défaut de Ansible<br>
+    Une fois dans le dossier roles, on peut initier une arborescence avec la commande : <br>
+    <div class="code">
+        ansible-galaxy init nom_du_role
+    </div>
+    Exemple de répertoire :<br>
+    <br>
+    roles<br>
+    ├── apache<br>
+    │   ├── handlers<br>
+    │   │   └── main.yml<br>
+    │   └── tasks<br>
+    │       ├── main.yml<br>
+    │       └── php-install.yml<br>
+    ├── mariadb<br>
+    │   └── tasks<br>
+    │       └── main.yml<br>
+    <br>
+    Ici on a 2 rôles : apache et mariadb. Mariadb est le rôle le plus simple : il n´y a que des tâches (tasks).<br>
+    Apache est plus complexe avec une tâche principale main.yml et une autre as inclure php-install.yml.<br>
+    Dans le dossier apache, on peut aussi voir un dossier handler qui gère le redémarrage d'apache en cas de changement.<br>
+    <br>
+    Exemple de fichier role:<br>
+    <div class="code">
+        ---<br>
+        <br>
+    #1. Cette tâche permet d’installer Apache (httpd) à l’aide du module apt<br>
+    - name: "apache installation"<br>
+    &ensp;  yum:<br>
+    &ensp; &ensp;    name: "httpd"<br>
+    &ensp; &ensp;    state: "present"<br>
+        <br>
+    #2. Cette tâche active le service Apache<br>
+    - name: "apache service activation"<br>
+    &ensp;  service:<br>
+    &ensp;    name: "httpd"<br>
+    &ensp;    state: "started"<br>
+    &ensp;    enabled: yes<br>
+        <br>
+    #3. Cette tâche fait appel à un autre fichier de configuration pour installer PHP. Elle est exécutée uniquement si la variable php_install est à vraie (par défaut, elle est à faux)<br>
+    - name: "install php packages"<br>
+    &ensp;  include_tasks: "php-install.yml"<br>
+    &ensp;  when: php_install|default(False)|bool<br>
+    </div>
+    <br>
+    L'indexation est importante comme en python.<br>
+    L'indexation se fait avec 2 espaces.<br>
+    Le fichier débute par ---.<br>
+    <br>
+    Nous avons donc :<br>
+    Des machines dans inventaire.ini<br>
+    Différents rôles dans le dossier roles<br>
+    <br>
+    Il reste plus qu'à associer les rôles et les machines.<br>
+    C'est le boulot du fichier playbook d'Ansible.<br>
+    fichier playbook Install_apache.yml:<br>
+    <div class="code">
+        ---<br>
+        - name: install apache<br>
+        &ensp; hosts : fedoraweb
+        &ensp; role: "apache"
+        &ensp; php_install:yes
+    </div>
+    On nomme l'opération avec name, puis on définie l'opération (Attention: indexation 2 espaces).<br>
+    La sous-section host indique les machines sur lesquelles appliquer le rôle.<br>
+    La sous-section role indique le rôle à appliquer.<br>
+    Le php_install est une variable utilisée par le rôle pour savoir si on veut installer php.<br>
+    <br>
+    Maintenant la commande pour lancer le tout :
+    <div class="code">
+        ansible-playbook -i inventaire.ini user user-ansible --become --ask-become-pass install-apache.yml
+    </div>
+    Alors ansible-playbook : lance un playbook<br>
+    -i inventaire.ini: permet de charger le fichier inventaire<br>
+    user user_ansible : permet de définir le nom d'utilisateur sur les machines distantes<br>
+    --become _ask-become_pass : on passe "en root" avec sudo et on demande le mot de passe<br>
+    install-apache.yml : le nom du playbook<br>
+    <br>
+    Normalement les machines devraient exécuter les ordres de Ansible.
+</p>
+{% endblock %}

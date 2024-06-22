@@ -1,0 +1,82 @@
+{% extends 'aide_memoire/base_aide_memoire.html' %}
+
+{% block contenu %}
+
+    <h1>Flask aide memoire</h1>
+    <p>
+        Flask permet à python de générer des pages web.<br>
+        Il est recommandé d'utiliser une appproche MVC (Model,View,Control)<br>
+        En général une application est composée de plusieurs fichiers et dosssiers.<br>
+        <img src={{ url_for('static', filename='img/aide_memoire_flask/arbo_flask.png') }}/><br>
+        Dans l'arborescence, vous apercevez un dossier fonction et un notebook qui ne participe pas à Flask.<br>
+        <br>
+        Fichier à la racine :<br>
+        Le fichier run.py : permet de lancer l'application.<br>
+        Le fichier config.py permet de faire la configuration de Flask et éventuellement de sa Base De Donnée (BDD)<br>
+        Le fichier .env pour des variables d'environnement (genre des clé secrètes ou des user/password)<br>
+        Un dossier pour l'application pingouin_app<br>
+        Un dossier venv pour l'environnement virtuel<br>
+        <br>
+        Les dossiers et fichiers de l'application :<br>
+        __ini__.py : fichier python pour initialiser un module.<br>
+        views.py : permet de gérer les routes/vue<br>
+        form.py : ici il s'agit de faire un modéle pour un formulaire. Vous pouvez trouver un models.py pour une BDD<br>
+        util.py : en général, je mets mes fonctions perso à l'intérieur<br>
+        <br>
+        Le dossier static : permet de stocker des fichiers statiques (image, feuille de style)<br>
+        Le dossier templates stocke les pages html<br>
+        <br>
+        Allons parlons un peu de code :
+        le fichier run.py:
+        <div class="code">from pingouin_app import app<br>
+            <br>
+            if __name__ == "__main__":<br>
+            <BLOCKQUOTE>app.run(debug=True)</BLOCKQUOTE><br>
+        </div>
+        Le fichier sert juste à lancer un serveur local avec la commande python run.py avec l'adresse par défaut.<br>
+        Attention il s'agit d'un server de test de code. Il ne doit pas servir pour lancer un vrai server web. Utilisez, par exemple, Gunicorn pour cela.<br>
+        Remarquez que le mode debug est activé sur ce serveur local. Si vous lancez l'application avec gunicorn, il lancera le site avec debug=False.<br>
+        <br>
+        <br>
+        views.py<br>
+        <div class="code">
+            #import bibliotheque flask et création application flask<br>
+            from flask import Flask, render_template, url_for, request<br>
+            <br>
+            app = Flask(__name__)<br>
+            <br>
+            #si besoin ajouter les bibliothèques ici<br>
+            app.config.from_object('config')<br>
+            from .form import Form_ia_pingouin<br>
+            from .util import ia_result<br>
+            <br>
+            #routage des pages web<br>
+            @app.route('/', methods = ['GET','POST'])<br>
+            @app.route('/index/', methods = ['GET','POST'])<br>
+            def index():<br>
+            <BLOCKQUOTE>return render_template('index.html')</BLOCKQUOTE><br>
+        </div>
+        Ce fichier permet de définir les routes avec un décorateur.<br>
+        Vous pouvez envoiyer des données dans la page en rajoutant un nom dans render_template.<br>
+        Exemple :
+        <div class="code">render_template('index.html',ma_variable=ma_variable)</div>
+        <br>
+        <br>
+        form.py<br>
+        <div class="code">
+            from flask_wtf import FlaskForm<br>
+            from wtforms import SelectField,DecimalField<br>
+            from wtforms.validators import DataRequired,NumberRange<br>
+            <br>
+            class Form_ia_pingouin(FlaskForm):<br>
+            <BLOCKQUOTE>specie = SelectField('espèce',validators=[DataRequired()],choices=["Adelie","Gentoo","Chinstrap"])</BLOCKQUOTE><br>
+        </div>
+        On crée une classe pour faire un formulaire.<br>
+        Il suffit ensuite de passer un objet de cette classe dans render_template<br>
+        <div class="code">
+            form = Form_ia_pingouin()<br>
+            return render_template('form_ia_penguin.html',form=form)<br>
+        </div>
+    </p>
+
+{% endblock %}

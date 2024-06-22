@@ -1,0 +1,16 @@
+{% extends 'data/base_data.html' %}
+
+{%block contenu %}
+<p>
+    Le pingouin avec les caractéristiques suivantes :<br>
+    <ul>
+        <li>espèce : {{ specie }}</li>
+        <li>longueur du nez : {{ bill_length_mm }}</li>
+        <li>grandeur du nez : {{ bill_depth_mm }}</li>
+        <li>Longueur des ailes : {{ flipper_length_mm }}</li>
+        <li>Poids du pingouin en gramme : {{ body_mass_g }}</li>
+    </ul>
+    L'IA pense qu'il s'agit d'un pingouin {{ sex_prediction }} avec une certitude de {{ sex_score }} %
+
+
+{% endblock %}

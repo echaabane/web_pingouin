@@ -1,0 +1,21 @@
+.choix {
+    background-color: lightseagreen;
+    border-radius: 20px;
+    width: 100%;
+    }
+
+h1 {    
+    text-align: center; 
+    }
+
+h2 {    
+    text-align: center; 
+    }
+
+footer{
+    background-color: #549cd6;
+    }
+
+.presentation {
+    text-align: center;
+}

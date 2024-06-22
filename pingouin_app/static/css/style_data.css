@@ -1,0 +1,39 @@
+div.wrapper {
+    display: grid;
+    grid-template-columns: 1fr 10fr;
+    }
+
+div.menu{
+    grid-column: 1;
+    background-color: aquamarine;
+    grid-row-start: 1;
+    }
+
+div.contenu{
+    grid-column: 2;
+    grid-row-start: 1;
+    }
+
+div.code{
+    background-color: black;
+    color: white;
+    border: solid green;
+    }
+
+table.pandas {
+    table-layout: fixed;
+    width: 100%;
+    border-collapse: collapse;
+    }
+       
+td.pandas {
+    border-collapse: collapse;
+    border: 3px solid black;
+    }
+    
+td.NaN {
+    border-collapse: collapse;
+    border: 3px solid black;
+    background-color: red;
+    }
+    

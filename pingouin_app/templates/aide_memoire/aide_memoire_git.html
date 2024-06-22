@@ -1,0 +1,70 @@
+{% extends 'aide_memoire/base_aide_memoire.html' %}
+
+{% block contenu %}
+
+    <link href="{{ url_for('static', filename='css/style_aide.css') }}" rel="stylesheet">
+
+    <header> <h1>Aide mémoire git</h1></header>
+    <body>
+        <p>
+        Rappel des commandes de base de Git<br>
+        Initialisation du répertoire local : <br>
+        <div class="code">git init -b main</div> <br>
+        init : crée un repertoire .git avec le depôt local de git<br>
+        -b nom_de_branche : permet de nommer le nom de la branche principale (par défaut master)<br>
+        <br>
+        <br>
+        ajout de fichier à tracker :<br>
+        <div class="code">git add nom_fichier</div>
+        <br>
+        <br>
+        Ignorer des fichiers ou des dossiers :<br>
+        Créer un fichier .gitignore et mettre les fichier à ignorer :<br>
+        exemple :<br>
+        <div class="code">
+            .env<br>
+            /dossier
+        </div>
+        <br>
+        <br>
+        Commiter le code :<br>
+        <div class="code">git commit -am "commentaire du commit"</div>
+        <br>
+        <br>
+        Créer une branche :<br>
+        <div class='code'>git branch nom_de_la_branche</div>
+        <br>
+        <br>
+        Aller dans une branche :<br>
+        <div class="code">git checkou nom_branche</div>
+        <br>
+        <br>
+        Effacer une branche :<br>
+        <div class="code">got branch -D nom_branche</div>
+        Merger une branche :<br>
+        Attention se placer dans la branche à merger<br>
+        merge de dev vers main : se placer dans main<br>
+        <div class="code">git merge nom_de_la_branche</div>
+        <br>
+        <br>
+        Mettre à jour une branche par rapport à une autre.<br>
+        REBASE main vers dev<br>
+        <div class=code>
+        git rebase main dev    
+        </div>
+        <br>
+        <br>
+        Cloner un repo : <br>
+        <div class="code">git clone path_du_repository_ou_du_gist path_du_repertoire_a_creer_en_local</div>
+        <br>
+        <br>
+        Lier git et github :<br>
+        <div class="code">git remote add origin https://github.com/nomutilisateur/MonProjet.git</div>
+        <br>
+        <br>
+        Push vers repo :<br>
+        <div class="code">git push origin nom_branche_a_pusher</div>        
+        </p>
+    </body>
+
+{% endblock %}

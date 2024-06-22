@@ -1,0 +1,33 @@
+{% extends 'aide_memoire/base_aide_memoire.html' %}
+
+{% block contenu %}
+
+    <link href="{{ url_for('static', filename='css/style_aide.css') }}" rel="stylesheet">
+    <h1>Aide Mémoire AWS_CDK</h1>
+    <p>
+        Aws cdk permet de faire de l'Infrastructure As A Code.<br>
+        Grâce à du code python, vous pouvez créer des infrastructure dans aws.<br>
+        <br>
+        Installation et configuration aws_cdk<br>
+        prérequie: 
+        Il faut créer un compte et un rôle IAM qui permettent de créer les instances sur aws.<br>
+        Il faut aussi installer aws CLI (aws en ligne de commande).<br>
+        Première étape : se créer un dossier pour stocker IAAC<br>
+        <div class="code">
+            cdk init app -- language python
+        </div>
+        Permet d'initialiser un répertoire. (Effectue aussi un dépôt git local)<br>
+        Créer un environnement virtuel<br>
+        <div class='code'>
+            python -m venv venv<br>
+            source /venv/bin/activate<br>
+            pip install -r requirements.txt
+        </div>
+        Si ce n'est pas déjà fait : configurer son compte aws pour CLI :<br>
+        <div class='code'>
+            aws configure ()
+        </div>       
+        Pour le reste de ce tuto on va directement sur le 
+        <a href="https://github.com/aws-samples/aws-cdk-examples">git</a> de AWS<br>
+    </p>
+{% endblock %}

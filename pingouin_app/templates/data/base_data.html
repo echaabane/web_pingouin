@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{%block content %}
+    <link href="{{ url_for('static', filename='css/style_data.css') }}" rel="stylesheet">
+    
+    <div class="wrapper">
+        <div class="contenu">
+        {%block contenu %}{%endblock%}
+        </div>
+        <div class="menu">
+            <td><form action={{url_for('description_ia_pingouin')}} method="get"><input type="submit" value="Description IA pingouin"></form></td>
+            <td><form action={{url_for('form_ia_pingouin')}} method="get"><input type="submit"  value="Formulaire IA pingouin"></form></td>
+            <td><form action={{url_for('python_data')}} method="get"><input type="submit"  value="Python et Data"></form></td>
+            <td><form action={{url_for('python_graph')}} method="get"><input type="submit"  value="Python : Graphique"></form></td>           
+        </div>
+    </div>
+{%endblock%}

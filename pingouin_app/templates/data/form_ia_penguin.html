@@ -1,0 +1,19 @@
+{% extends 'data/base_data.html' %}
+
+{%block contenu %}
+<p>
+    <form action="{{ url_for("resultat_pingouin") }}" method="POST">
+        {{ form.csrf_token }}
+
+        <p>{{ form.specie.label }} {{ form.specie }}</p>
+        <p>{{ form.bill_length_mm.label }} {{ form.bill_length_mm }}</p>
+        <p>{{ form.bill_depth_mm.label }} {{ form.bill_depth_mm }}</p>
+        <p>{{ form.flipper_length_mm.label }} {{ form.flipper_length_mm }}</p>
+        <p>{{ form.body_mass_g.label }} {{ form.body_mass_g}}   </p> 
+        <p>{{ form.csrf_token }}
+
+        <input type="submit"/>
+
+    </form>
+</p>
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends "data/base_data.html" %}
+
+{%block contenu%}
+<h1>Introduction aux bibliothéques python pour la datascience</h1>
+<p>
+    Description des bibliothéques de base pour la data science :<br>
+    Ceci est juste une introduction pour les bibliothéques. Vous pouvez cliquer sur le lien vers la doc en début de chapitre.  
+    <h2>Les bibliothéques pandas et numpy :</h2><br>
+    <br>
+    <h3>Numpy</h3>
+    <a href="https://numpy.org/">Numpy</a> est une bibliothèque orientée math. L'objet le plus utile est l'array ou le tableau numpy.<br>
+    Un array est une matrice : une sorte de tableau rempli de chiffre.<br>
+    Ces tableaux vous permettent de faire du calcul matriciel.<br>
+    Un petit rappel math : <a href="https://www.unilim.fr/pages_perso/jean.debord/math/matrices/matrices.htm">cours matrice.</a><br>
+    Interêt : format léger en mémoire et rapide. Utile en Machine Learning.<br>
+    <br>
+    <h3>Pandas</h3><br>
+    <a href="https://pandas.pydata.org/">Pandas</a> est une bibliothèque utilisant des dataframes.<br>
+    Un dataframe est une sorte de tableau excel ou de table de base de données.<br>
+    Vous pouvez créer un dataframe avec des fichiers (excel,csv,...) ou en vous connectant avec certaines BDD.<br>
+    <br>
+    <br> 
+    <h2>Les bibliothèques d'affichage :</h2><br>
+    <h3>Matplotlib</h3><br>
+    <br>
+    <a href="https://matplotlib.org/">Matplotlib</a> est une bibliothèque qui permet entre autre de créer des graphes.<br>
+    Il y a 2 façons de l'utliser :<br>
+    La méthode <a href="https://matplotlib.org/2.0.2/examples/pylab_examples/simple_plot.html">script</a><br>
+    La méthode <a href="https://matplotlib.org/matplotblog/posts/pyplot-vs-object-oriented-interface/">objet</a><br>
+    Les 2 méthodes fonctionnent, mais j'ai une préfèrence pour la programation orientée objet.<br>
+    <br>
+    <h3>Seaborn</h3><br>
+    <br>
+    <a href="https://seaborn.pydata.org/">Seaborn</a> permet de faire des graphes. Cette bibliothèque est liée à Matplotlib. 
+    Vous pouvez passer un objet axe maplotlib dans les fonctions Seaborn. 
+    Seaborn prend mieux en charge les dataframes que Matplotlib. 
+    <br>
+    <br>
+    <h2>Les statistiques :</h2><br>
+    <br>
+    <h3>Statsmodel</h3>
+    <br>
+    <a href="https://www.statsmodels.org/stable/index.html">Statsmodels</a> permet de faire des tests statistiques, des régressions. Bref c'est une bibliothèque pour statisticiens.<br>
+    <br>
+    <h3>Scikit-learn</h3><br>
+    <br>
+    ou <a href="https://scikit-learn.org/stable/">Sklearn</a> permet, elle aussi, de faire des tests statistiques. 
+    <br>
+    <br>
+    <h2>Les bibliothèques IA :</h2><bt>
+    <h3>Scikit-learn</h3><br>
+    <br>
+    Ou <a href="https://scikit-learn.org/stable/">Sklearn</a> permet de bien débuter dans les IA.<br>
+    Vous avez accès à des outils pour normaliser les données, des petits models d'IA.<br>
+    <br>
+    <h3>Tensorflow</h3><br>
+    <br>
+    <a href="https://www.tensorflow.org/?hl=fr">Tensorflow</a> permets de créer des algorythmes de ML. Il peux utiliser des CPU ou des GPU. 
+    <br>
+</p>
+{%endblock%}

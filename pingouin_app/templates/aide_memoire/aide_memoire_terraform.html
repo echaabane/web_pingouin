@@ -1,0 +1,109 @@
+{% extends 'aide_memoire/base_aide_memoire.html' %}
+
+{% block contenu %}
+
+    <link href="{{ url_for('static', filename='css/style_aide.css') }}" rel="stylesheet">
+
+    <h1>Aide Mémoire terraform</h1>
+    <p>
+        Prérequis : <br>
+        On considère que le provider CLI est déjà configuré avec un ID et le reste de la sécurité.<br>
+        <a href="https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html">Amazon CLI</a><br>
+        <a href="https://cloud.google.com/sdk/docs/install?hl=fr">google cloud</a><br>
+        <br>
+        On crée un fichier variables.tf avec les ressources nécéssaires : <br>
+        <div class="code">
+            variable "project"{<br>
+                &ensp;    type = string<br>
+                &ensp;    default = "nom_projet"<br>
+            }<br>
+            <br>
+            variable "region"{<br>
+                &ensp;    type = string<br>
+                &ensp;    default = "region_deploie"<br>
+            }<br>
+            <br>
+            variable "zone"{<br>
+                &ensp;    type = string<br>
+                &ensp;    default = "zone_deploi"<br>
+            }<br>
+        </div>
+        <br>
+        On pourra accèder à ces variables avec l'objet var. Exemple var.region.<br>
+        <br>
+        On crée un fichier main.tf avec les ressources nécéssaires : <br>
+        Exemple : <br>
+        <div class="code">
+            terraform {<br>
+                &ensp;    required_providers {<br>
+                &ensp;    &ensp;      aws = {<br>
+                &ensp;    &ensp;  &ensp;source  = "hashicorp/aws"<br>
+                &ensp;    &ensp;  &ensp;version = "~> 4.16"<br>
+                &ensp;    &ensp;}<br>
+                &ensp;}<br>
+              <br>
+              &ensp;  required_version = ">= 1.2.0"<br>
+              &ensp; }<br>
+              <br>
+              &ensp;  provider "aws" {<br>
+                &ensp;  &ensp;  region  = var.region"<br>
+                &ensp;}<br>
+              <br>
+              &ensp;resource "aws_instance" "app_server" {<br>
+                &ensp;&ensp;  ami           = "ami-830c94e3"<br>
+                &ensp;&ensp;  instance_type = "t2.micro"<br>
+                <br>
+                &ensp;&ensp;   tags = {<br>
+                &ensp;&ensp;  Name = "ExampleAppServerInstance"<br>
+                &ensp;}<br>
+                output var.region
+              }<br>
+        </div>              
+        On décrit ici le provider aws  avec l'AMI que l'on veux, la région et le type d'instance. <br>
+        <br>
+        Si besoin la commande output peut vous servir à faire sortir une variable (comme print ou echo).<br>
+        <br>
+        On initialise terraform avec la commande : <br>
+        <div class="code">
+            terraform init
+        </div>
+        <br>
+        On peut ensuite faire un contrôle du code avec la commande validate:<br>
+        <div class="code">
+            terraform validate
+        </div>
+        <br>
+        On peux voir une préversion de l'ínfra avec la commande plan :<br>
+        <div class="code">
+            terraform plan
+        </div>
+        <br>
+        On peut ensuite appliquer (avec cet exemple sur aws) :<br>
+        <div class="code">
+            terraform apply
+        </div>
+        <br>
+        On peut détruire ces instances avec la commande : <br>
+        <div class="code">
+            terraform destroy
+        </div>
+        <br>
+        Pour mieux diviser son code vous pouvez par exemple mettre les providers dans un fichier providers.tf .<br>
+        On peux créer aussi un fichier prod.tfvars pour y mettre les variables. Un peu comme un .env en python.<br>
+        Exemple : <br>
+        <div class="code">
+            ma_variable = "machainedecaractere"
+        </div>
+        Si vous y mettez des données sensibles, evitez de partager le code. Ajouter le fichier au .gitignore .<br>
+        terraform output vous permet de recupérer vos outputs.<br>
+        L'option -raw permet d'enlever les guillemets.<br>
+        L'option -json permet de faire un format json<br>
+        <div class="code">
+            terraform output -raw<br>
+            terraform output -json<br>
+        </div>
+        <br>
+
+    </p>
+
+{% endblock %}

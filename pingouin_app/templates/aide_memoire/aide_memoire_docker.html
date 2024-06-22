@@ -1,0 +1,144 @@
+{% extends 'aide_memoire/base_aide_memoire.html' %}
+
+{% block contenu %}
+<h1>Aide memoire commande docker</h1>
+<p>
+    <a href="https://docs.docker.com/"> lien vers la documentation de docker</a><br>    
+    <h2>Commande de base :</h2><br>
+    <div class="code">
+        docker run nom_image
+    </div>
+    permet de lancer une image docker. Si l'image n'est pas en local, docker va essayer de la télécharger sur docker hub.<br>
+    -it permet d avoir une ligne de commande<br>
+    -d permet de détacher le conteneur et de liberé la ligne de commande<br>
+    -p permet de configurer les ports du docker<br>
+    exemple : <br>
+    <div class="code">
+        docker run -d -p 8080:80 nginx
+    </div>
+    <br>
+    <br>
+    <div class="code">
+        docker ps<br>
+    </div>
+    permet de lister les dockers en route<br>
+    <br>
+    <br>
+    <div class="code">
+        docker stop ID
+    </div>
+    permet d'arréter un docker<br>
+    <br>
+    <br>
+    <div class="code">
+        docker system prune
+    </div>
+    permet de nettoyer le système (Attention : on arrête tout)<br>
+    <br>
+    <br>
+    <div class="code">
+        docker image
+    </div>
+    permet de voir les images téléchargées en local
+    <br>
+    <br>
+    <div class="code">
+        docker pull nom_image
+    </div>
+    permet de télécharger une image sans la lancer<br>
+    <br>
+    <br>
+    chercher une image sur le docker hub: <br>
+    <div class="code">
+        docker search truc<br>
+    </div>
+    <br>
+    <br>
+    <h2> Création de docker file : </h2><br>
+    créez un fichier texte et mettre les instructions pour le docker. <br>
+    Exemple de fichier : (merci openclassroom)<br>
+    <div class="code">
+        # partir de l image debian en version 9<br>
+        FROM debian:9<br>
+        <br>
+        #lance des instructions dans l'image<br>
+        RUN apt-get update -yq \<br>
+        && apt-get install curl gnupg -yq \<br>
+        && curl -sL https://deb.nodesource.com/setup_10.x | bash \<br>
+        && apt-get install nodejs -yq \<br>
+        && apt-get clean -y<br>
+        <br>
+        #ajoute des repertoires ou des fichiers et selectionne le dossier de travail<br>
+        ADD . /app/<br>
+        WORKDIR /app<br>
+        RUN npm install<br>
+        <br>
+        #exposition des ports reseaux et création d'un volume<br>
+        EXPOSE 2368<br>
+        VOLUME /app/logs<br>
+        <br>
+        #bon l'image docker doit bien faire quelquechose. Mettre ici la commande pour lancer l'app<br>
+        CMD npm run start<br>
+    </div>
+    Comme sur git on peux ignorer des fichiers grâce au fichier .dockerignore. Il est  à placer dans le même dosssier que votre dockerfile (oui le .env avec toute vos clé secretes).<br>
+    construire l'image (Ne pas oublier le point pour indiquer le dossier courant) :<br>
+    <div class="code">
+        docker build -t nom_de_l_image .
+    </div>
+    Pour mettre l'image sur le docker hub (il vous faut un compte), il faut tagger l'image puis l'envoyer.
+    <div class="code">
+        docker tag id_du_conteneur USERNAME/ocr-docker-build:latest<br>
+        docker push YOUR_USERNAME/ocr-docker-build:latest<br>
+    </div>
+    <br>
+    <br>
+    <h2>docker-compose :</h2>
+    Permets de lancer plusieurs conteneurs en meme temps (exemple BDD+serveur web)<br>
+    Les commandes de bases ressemble à celle de docker<br>
+    <br>
+    docker-compose up -d vous permettra de démarrer l'ensemble des conteneurs en arrière-plan <br>
+    <br>
+    docker-compose ps vous permettra de voir le statut de l'ensemble de votre stack <br>
+    <br>
+    docker-compose logs -f --tail 5 vous permettra d'afficher les logs de votre stack <br>
+    <br>
+    docker-compose stop vous permettra d'arrêter l'ensemble des services d'une stack <br>
+    <br>
+    docker-compose down vous permettra de détruire l'ensemble des ressources d'une stack <br>
+    <br>
+    docker-compose config vous permettra de valider la syntaxe de votre fichier docker-compose.yml<br>
+    <br>
+    <br>
+    exemple de fichier docker-compose : (encore merci openclassroom)
+    <div class="code">
+        version: '3'<br>
+        services:<br>
+        db:<br>
+            image: mysql:5.7<br>
+            volumes:<br>
+            - db_data:/var/lib/mysql<br>
+            restart: always<br>
+            environment:<br>
+            MYSQL_ROOT_PASSWORD: somewordpress<br>
+            MYSQL_DATABASE: wordpress<br>
+            MYSQL_USER: wordpress<br>
+            MYSQL_PASSWORD: wordpress<br>
+            <br>
+        wordpress:<br>
+            depends_on:<br>
+            - db<br>
+            image: wordpress:latest<br>
+            ports:<br>
+            - "8000:80"<br>
+            restart: always<br>
+            environment:<br>
+            WORDPRESS_DB_HOST: db:3306<br>
+            WORDPRESS_DB_USER: wordpress<br>
+            WORDPRESS_DB_PASSWORD: wordpress<br>
+            WORDPRESS_DB_NAME: wordpress<br>
+            <br>
+        volumes:<br>
+        db_data: {}<br>
+    </div>
+</p>
+{% endblock %}

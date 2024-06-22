@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{%block content %}
+    <link href="{{ url_for('static', filename='css/style_aide.css') }}" rel="stylesheet">
+    
+    <div class="wrapper">
+        <div class="contenu">
+        {%block contenu %}{%endblock%}
+        </div>
+    
+        <div class="menu">
+            <td><form action={{url_for('ansible')}} method="get"><input type="submit"  value="Ansible"></form></td>
+            <td><form action={{url_for('tip_docker')}} method="get"><input type="submit"  value="Docker"></form></td>
+            <td><form action={{url_for('tip_flask')}} method="get"><input type="submit"  value="Flask"></form></td>
+            <td><form action={{url_for('git')}} method="get"><input type="submit"  value="Git et Github"></form></td>
+            <td><form action={{url_for('git_action')}} method="get"><input type="submit"  value="Github action"></form></td>
+            <td><form action={{url_for('tips_variable_systeme')}} method="get"><input type="submit"  value="Heroku"></form></td>
+            <td><form action={{url_for('terraform')}} method="get"><input type="submit"  value="Terraform"></form></td>
+            <td><form action={{url_for('aws_cdk')}} method="get"><input type="submit"  value="AWS CDK"></form></td>         
+        </div>
+    </div>
+{%endblock%}

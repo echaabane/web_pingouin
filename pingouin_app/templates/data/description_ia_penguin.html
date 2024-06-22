@@ -1,0 +1,174 @@
+{% extends "data/base_data.html" %}
+
+{%block contenu %}
+
+<h1>Dataset "penguin" et IA</h1>
+<p>
+    Bonjour, le but de cette page est de vous présenter la création d'une petite IA de classification.<br>
+    Vous pouvez trouver le notebook servant à faire les IA
+    <a href="https://github.com/barrmath/web_pingouin">ici</a>.
+    Il ne faut que quelques étapes pour créer une IA :<br>
+    <ol>
+        <li>Trouver des données</li>
+        <li>Nettoyer/filtrer les données</li>
+        <li>Entrainer l'IA</li>
+        <li>Tester l'IA</li>
+        <li>Utiliser l'IA</li>
+    </ol>
+    Vous pouvez trouver des données un peu partout. par exemple le site: <a href="https://www.data.gouv.fr/fr/">
+    data.gouv.</a> fournit des données de différents corps d'état francais <br>
+Le site <a href="https://www.kaggle.com/">kaggle</a> peut vous fournir des datasets pour du Machine Learning.
+    Ici, nous allons utiliser un datataset fourni par seaborn : le dataset pingouin.
+    <h2>Présentation du dataset pingouin</h2>
+    <br>
+    Ce dataset est contenu dans la bibliothèque <a href="https://seaborn.pydata.org/">Seaborn</a> pour python.
+    Il est accessible par la commande python :<br>
+    <div class="code">sns.load_dataset('penguins')</div><br>
+    Il s'agit d'un tableau avec plusieurs caractéristiques des pingouins.
+
+    <table class="pandas">
+        <tr>
+            <td class="pandas"></td><td class="pandas">species</td><td class="pandas">island</td>
+            <td class="pandas">bill_length_mm</td><td  class="pandas">bill_depth_mm</td><td class="pandas">flipper_length_mm</td>
+            <td class="pandas">body_mass_g</td><td class="pandas">sex</td>
+        </tr>
+        <tr>
+            <td class="pandas">0</td><td class="pandas">Adelie</td><td class="pandas">Torgersen</td><td class="pandas">39.1</td><td class="pandas">18.7</td>
+                <td class="pandas">181.0</td><td class="pandas">3750.0</td><td class="pandas">Male</td>
+        </tr>
+        <tr>
+            <td class="pandas">1</td><td class="pandas">Adelie</td><td class="pandas">Torgersen</td><td class="pandas">39.5</td><td class="pandas">17.4</td>
+            <td class="pandas">186.0</td><td class="pandas">3800.0</td><td class="pandas">Female</td>
+        </tr>
+        <tr>
+            <td class="pandas">2</td><td class="pandas">Adelie</td><td class="pandas">Torgersen</td><td class="pandas">40.3</td><td class="pandas">18.0</td>
+            <td class="pandas">195.0</td><td class="pandas">3250.0</td><td class="pandas">Female</td>
+        </tr>
+        <tr>
+            <td class="pandas">3</td><td class="pandas">Adelie</td><td class="pandas">Torgersen</td><td class="NaN">NaN</td><td class="NaN">NaN</td>
+            <td class="NaN">NaN</td><td class="NaN">NaN</td><td class="NaN">NaN</td>
+        </tr>
+        <tr>
+            <td class="pandas">4</td><td class="pandas">Adelie</td><td class="pandas">Torgersen</td><td class="pandas">36.7</td><td class="pandas">19.3</td>
+            <td class="pandas">193.0</td><td class="pandas">3450.0</td><td class="pandas">Female</td>
+        </tr>        
+    </table>
+    <br>
+    On peut voir sur ce tableau des données manquantes ainsi que diverses colonnes<br>
+    <ul>
+        <li>une colonne sans nom : sert d'identifiant</li>
+        <li>species : l'espèce du pingouin</li>
+        <li>island : l'île du pingouin</li>
+        <li>bill_length_mm : la longueur du bec</li>
+        <li>bill_depth_mm : la profondeur du bec (ou la grandeur)</li>
+        <li>flipper_length_mm : la taille des nageoires ou des ailes</li>
+        <li>body_mass_g : le poids du pingouin</li>
+        <li>sex : le sexe du pingouin</li>
+    </ul>
+    <br>
+    Une vue graphique générale du dataset permise par la commande pairplot de seaborn :<br>
+    <div class="code">sns.pairplot(data,hue='sex')</div><br>
+    Et la sortie graphique:<br>
+    <img src={{ url_for('static', filename='/img/description_ia_pingouin/pairplot.jpg') }} ><br>
+    <br>
+    <h2>Nettoyer filtrer les données</h2>
+    Pour faire les IA, j'ai utilisé la bibliothèque <a href="https://scikit-learn.org/stable/">scikit-learn</a>.<br>
+    Les IA doivent recevoir des données ayant certaines caractéristiques:<br>
+    <ul>
+        <li>Avoir une caractéristique ou dimension par colonne (par exemple le poids dans une colonne)</li>
+        <li>Un individu ou exemple par ligne (ici un pingouin par ligne)</li>
+        <li>Que des chiffres à regarder (on remplace par exemple male par 0 et femelle par 1)</li>
+        <li>pas de valeur manquante ou NaN</li>
+    </ul>
+    Ce n'est pas obligatoire, mais il est bien de normer ou "scaler" ces valeurs.<br>
+    <br>
+    Notre dataset après modification se présente sous cette forme :<br>
+    <img src={{ url_for('static', filename='/img/description_ia_pingouin/pairplot_norm.jpg') }}><br>
+    On voit bien que les données ont été normalisées.<br>
+    On va bientôt passer à l'entrainement et aux tests. Pour celà, on sépare les données en 2 : entrainment et test.
+    <div class="code">
+        from sklearn.model_selection import train_test_split<br>
+        X_train, X_test, y_train, y_test = train_test_split(X, y,)
+    </div><br>
+    <h2>Entrainement des IA</h2>
+    Avant de commencer posons-nous une question : "une IA ça fait quoi ? et comment ça marche ?"<br>
+    Il y a plusieurs types d'IA, il y a des IA qui peuvent prédire la suite d'une courbe, des IA qui simule
+    des réponses, ou qui dessine.<br>
+    Pour notre cas, on va faire une IA dite de classification. Elle va catégoriser nos pingouins.<br>
+    <br>
+    Il y a aussi 2 type d'entrainement l'entrainement non supervisé et supervisé.<br>
+    Bon imaginer que VOUS soyez une IA. on vous présente ce graphe :<br>
+    <img src={{ url_for('static', filename='/img/description_ia_pingouin/specie_no_hue_scatterplot_1.jpg') }}><br>
+    Vous pouvez dire par exemple que vous voyez deux groupes que vous pouvez séparer par une ligne.<br>
+    <img src={{ url_for('static', filename='/img/description_ia_pingouin/specie_no_hue_scatterplot_2.jpg') }}><br>
+    Ce que représentent ces groupes ? Vous ne savez pas. Il faut analyser un peu plus et souvent par un humain<br>
+    Vous avez créé ces 2 groupes sans savoir si un point est dans un groupe ou non.<br>
+    Il s'agit d'un entrainment non supervisé.<br>
+    <br>
+    Allez plus dur ce graphe là :<br>
+    <img src={{ url_for('static', filename='/img/description_ia_pingouin/specie_no_hue_scatterplot_3.jpg') }}><br>
+    Bon, avouons-le, on ne peut pas classer ce nuage de points. L'IA non supervisée a de fortes chances de ne
+    pas passer les tests.<br>
+    <img src={{ url_for('static', filename='/img/description_ia_pingouin/specie_hue_scatterplot_1.jpg') }}><br>
+    Avec des couleurs ça va mieux. On va pouvoir classer ces pingouins avec ces données. Je connais déjà les groupes.
+    Il s'agit d'un entrainement supervisé.<br>
+    <img src={{ url_for('static', filename='/img/description_ia_pingouin/specie_hue_scatterplot_2.jpg') }}><br>
+    Et voilà.<br>
+    Mais ce n'est pas parfait; on voit des pingouins dans les mauvais groupes.<br>
+    Et oui, une IA ne sera que rarement parfaite. Elle aura toujours une probabilité de se tromper.<br>
+    <br>
+    <br>
+    Nous avons donc vu qu'une IA a besoin de données, que certaines IA sont spécialisées dans un problème,
+    mais aussi que leur entrainement joue sur leurs performances.<br>
+    <br>
+    Je ne l'ai pas encore dit, mais le jeu de données a des pingouins dont on ne connait par le sexe.<br>
+    Essayons de faire une IA qui détermine le sexe des pingouins.<br>
+    <img src={{ url_for('static', filename='/img/description_ia_pingouin/pairplot.jpg') }} ><br>
+    On n'a pas de nuage de point qui determine un groupe male et femelle. C'est ici que l'on pourra voir la
+    puissance des IA.<br>
+    En effet, je vous ai montré des nuages de points en 2D. Mais une IA peut voir des nuages de points en X dimensions.
+    C'est un peu dur à comprendre. Mais il existe une <a href="https://www.youtube.com/watch?v=LQFkUjYzOn8">vidéo</a>
+    qui vous le fera comprendre.<br>
+    Pour l'instant, dites-vous que l'IA possède une sorte de don qui lui permet
+    de voir dans plusieurs dimensions en même temps.<br>
+    <h2>Entrainement et test</h2>
+    La méthode Kmeans :<br>
+    <div class="code">
+        #creation de l objet IA<br>
+        model_KMeans = KMeans(n_clusters=2, n_init="auto")<br>
+        # entrainement<br>
+        model_KMeans.fit(data_train)<br>
+    </div>
+    <br>
+    Pour tester cette IA, on va donc comparer les résultats avec le jeu de tests grâce à une matrice de confusion.<br>
+    <img src={{ url_for('static', filename='/img/description_ia_pingouin/matrice_kmeans.jpg') }}><br>
+    Petite explication : On va comparer les valeurs de test avec les valeurs prédites par l'IA.<br>
+    On a donc pour le Kmeans :<br>
+    <ul>
+        <li>en haut à gauche les valeurs 0 bien prédites</li>
+        <li>en bas à gauche les valeurs 0 prédites en vrai (faux positif)</li>
+        <li>en haut à droite les valeurs 1 prédites en faux (vrai négatif)</li>
+        <li>en bas à droite les valeurs 1 bien prédites </li>
+    </ul>
+    <br>
+    La méthode de régression logistique :<br>
+    <div class="code">
+        # création du model
+        model_reg_logis = LogisticRegression(max_iter=max_iter)
+        # entrainement
+        model_reg_logis.fit(data_train, target_train)
+    </div>
+    Les plus observateurs ont remarqué que le Kmeans n'avait que les data_train d'entrainement et que la régression
+    logistique avait les résultats aussi.<br>
+    On voit la différence entre l'entrainement supervisé ou non.<br>
+    Observons la matrice de confusion :<br>
+    <img src={{ url_for('static', filename='/img/description_ia_pingouin/matrice_reg_log.jpg') }}><br>
+
+    Une bonne IA va donc avoir un maximun en haut à gauche et en bas à droite.<br>
+    Pour aller plus loin, je vous propose d'aller voir cette 
+    <a href="https://learn.microsoft.com/fr-fr/azure/machine-learning/how-to-understand-automated-ml?view=azureml-api-2">page</a>.<br>
+    Le choix entre les 2 IA est simple ici, les résultats sont en faveur de la régression logistique.<br><br>
+    Pour résumer une IA doit être bien entrainée avec une bonne base de données et il faut la tester. Et même ainsi,
+    elle peut encore se tromper.<br>
+</p>
+{% endblock %}
